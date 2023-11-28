@@ -1,0 +1,1 @@
+# AzureArcSqlManagedInstance
