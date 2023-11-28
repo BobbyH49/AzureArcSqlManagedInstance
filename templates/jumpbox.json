@@ -199,6 +199,17 @@
                 },
                 "licenseType": "Windows_Client"
             }
+        },
+        {
+            "apiVersion": "2017-03-15-preview",
+            "name": "arcsqlmi-ws",
+            "location": "[resourceGroup().location]",
+            "type": "Microsoft.OperationalInsights/workspaces",
+            "properties": {
+                "sku": {
+                    "name": "pergb2018"
+                }
+            }
         }
     ],
     "outputs": {
