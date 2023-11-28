@@ -10,21 +10,21 @@
         }
     },
     "variables": {
-        "nsgId": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', 'LevelUpJumpbox-nsg')]",
-        "vnetName": "LevelUpJumpbox-vnet",
-        "vnetId": "[resourceId(resourceGroup().name,'Microsoft.Network/virtualNetworks', 'LevelUpJumpbox-vnet')]",
+        "nsgId": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', 'ArcSqlMiJumpbox-nsg')]",
+        "vnetName": "ArcSqlMiJumpbox-vnet",
+        "vnetId": "[resourceId(resourceGroup().name,'Microsoft.Network/virtualNetworks', 'ArcSqlMiJumpbox-vnet')]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/', 'default')]"
     },
     "resources": [
         {
-            "name": "levelupjumpbox-nic",
+            "name": "arcsqlmijumpbox-nic",
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2021-03-01",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[concat('Microsoft.Network/networkSecurityGroups/', 'LevelUpJumpbox-nsg')]",
-                "[concat('Microsoft.Network/virtualNetworks/', 'LevelUpJumpbox-vnet')]",
-                "[concat('Microsoft.Network/publicIpAddresses/', 'LevelUpJumpbox-ip')]"
+                "[concat('Microsoft.Network/networkSecurityGroups/', 'ArcSqlMiJumpbox-nsg')]",
+                "[concat('Microsoft.Network/virtualNetworks/', 'ArcSqlMiJumpbox-vnet')]",
+                "[concat('Microsoft.Network/publicIpAddresses/', 'ArcSqlMiJumpbox-ip')]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -36,7 +36,7 @@
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
-                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', 'LevelUpJumpbox-ip')]",
+                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', 'ArcSqlMiJumpbox-ip')]",
                                 "properties": {
                                     "deleteOption": "Detach"
                                 }
@@ -51,7 +51,7 @@
             }
         },
         {
-            "name": "['LevelUpJumpbox-nsg']",
+            "name": "['ArcSqlMiJumpbox-nsg']",
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2019-02-01",
             "location": "[resourceGroup().location]",
@@ -74,7 +74,7 @@
             }
         },
         {
-            "name": "LevelUpJumpbox-vnet",
+            "name": "ArcSqlMiJumpbox-vnet",
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2020-11-01",
             "location": "[resourceGroup().location]",
@@ -101,7 +101,7 @@
         {
             "type": "Microsoft.Network/publicIpAddresses",
             "apiVersion": "2020-08-01",
-            "name": "LevelUpJumpbox-bastion-ip",
+            "name": "ArcSqlMiJumpbox-bastion-ip",
             "location": "[resourceGroup().location]",
             "sku": {
                 "name": "Standard"
@@ -113,11 +113,11 @@
         {
             "type": "Microsoft.Network/bastionHosts",
             "apiVersion": "2019-04-01",
-            "name": "LevelUpJumpbox-bastion",
+            "name": "ArcSqlMiJumpbox-bastion",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', 'LevelUpJumpbox-vnet')]",
-                "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', 'LevelUpJumpbox-bastion-ip')]"
+                "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', 'ArcSqlMiJumpbox-vnet')]",
+                "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', 'ArcSqlMiJumpbox-bastion-ip')]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -125,10 +125,10 @@
                         "name": "IpConf",
                         "properties": {
                             "subnet": {
-                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', 'LevelUpJumpbox-vnet', 'AzureBastionSubnet')]"
+                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', 'ArcSqlMiJumpbox-vnet', 'AzureBastionSubnet')]"
                             },
                             "publicIPAddress": {
-                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', 'LevelUpJumpbox-bastion-ip')]"
+                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', 'ArcSqlMiJumpbox-bastion-ip')]"
                             }
                         }
                     }
@@ -136,7 +136,7 @@
             }
         },
         {
-            "name": "LevelUpJumpbox-ip",
+            "name": "ArcSqlMiJumpbox-ip",
             "type": "Microsoft.Network/publicIpAddresses",
             "apiVersion": "2020-08-01",
             "location": "[resourceGroup().location]",
@@ -148,12 +148,12 @@
             }
         },
         {
-            "name": "LevelUpJumpbox",
+            "name": "ArcSqlMiJumpbox",
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2022-03-01",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[concat('Microsoft.Network/networkInterfaces/', 'levelupjumpbox-nic')]"
+                "[concat('Microsoft.Network/networkInterfaces/', 'arcsqlmijumpbox-nic')]"
             ],
             "properties": {
                 "hardwareProfile": {
@@ -177,7 +177,7 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', 'levelupjumpbox-nic')]",
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', 'arcsqlmijumpbox-nic')]",
                             "properties": {
                                 "deleteOption": "Detach"
                             }
@@ -185,7 +185,7 @@
                     ]
                 },
                 "osProfile": {
-                    "computerName": "LevelUpJumpbox",
+                    "computerName": "ArcSqlMiJumpbox",
                     "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]",
                     "windowsConfiguration": {

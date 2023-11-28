@@ -13,10 +13,6 @@
 
     [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FBobbyH49%2Fazurearcsqlmanagedinstance%2Fmain%2Ftemplates%2Fjumpbox.json)
 
-Deployment diagram (now also includes a Log Analytics workspace for monitoring your directly connected Managed Instances)
-
-![deploy-diagram](media/deploy-diagram.png)
-
 Deployed resources
 
 ![lab-resources](media/lab-resources-1.png)
