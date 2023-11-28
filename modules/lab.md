@@ -46,19 +46,13 @@ Deployed resources
     ```
     ![arc-data-extension-install](media/arc-data-extension-install.png)
 
-    To upgrade run 
-    ```text
-    az extension update --name arcdata
-    ```
-    ![arc-data-extension-update](media/arc-data-extension-update.png)
-
 3.  Kubectl
     
     For latest version go to https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/
-    Example download using curl for version 1.24.0 
+    Example download using curl for version 1.28.4 
 
     ```text
-    $ProgressPreference = 'SilentlyContinue'; mkdir C:\Kube; Invoke-WebRequest -Uri https://dl.k8s.io/release/v1.24.0/bin/windows/amd64/kubectl.exe -OutFile "C:\kube\kubectl.exe"
+    $ProgressPreference = 'SilentlyContinue'; mkdir C:\Kube; Invoke-WebRequest -Uri https://dl.k8s.io/release/v1.28.4/bin/windows/amd64/kubectl.exe -OutFile "C:\kube\kubectl.exe"
     ```
     ![kubectl-install](media/kubectl-install.png)
 
@@ -66,7 +60,7 @@ Deployed resources
     Validate by running the following and comparing the two versions in SHA256 format
 
     ```text
-    $ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri https://dl.k8s.io/v1.24.0/bin/windows/amd64/kubectl.exe.sha256 -OutFile "C:\kube\kubectl.exe.sha256"
+    $ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri https://dl.k8s.io/v1.28.4/bin/windows/amd64/kubectl.exe.sha256 -OutFile "C:\kube\kubectl.exe.sha256"
     CertUtil -hashfile C:\kube\kubectl.exe SHA256
     type C:\kube\kubectl.exe.sha256
     ```

@@ -248,13 +248,7 @@ SQL Server agent is disabled by default.
     END;
     ```
 
-4. Enable the trace flag - There is a bug and the PG is aware of it
-
-    ```sql
-    DBCC traceon(1820,-1)
-    ```
-
-5. Verify the backup file is readable, and intact
+4. Verify the backup file is readable, and intact
 
     ```sql
     RESTORE FILELISTONLY 
@@ -263,7 +257,7 @@ SQL Server agent is disabled by default.
 
     If this fails with error "Operating system error 5(Access is denied.)" this could be an issue with SAS or it could be a network issue.  If your storage account can only be accessed via Firewall rule (selected networks) then you will need to create a service endpoint for the Virtual Network / Subnet in your Kubernetes managed resource group and add to the firewall rule for Virtual Networks
 
-6. Prepare and run the RESTORE DATABASE
+5. Prepare and run the RESTORE DATABASE
 
     ```sql
     RESTORE DATABASE <database name> FROM URL = 'https://<mystorageaccountname>.blob.core.windows.net/<mystorageaccountcontainername>/<file name>.bak'

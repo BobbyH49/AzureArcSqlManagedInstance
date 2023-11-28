@@ -37,10 +37,11 @@
 	az group create --name <RG Name> --location <Region>
     ```
 
-5.	Get the latest (IsPreview) and latest stable (Default) version for AKS
+5.	Get the latest stable (Default) version for AKS.  Find the default major version and then the highest minor version.
 
     ```text 
-    az aks get-versions --location <Region> --query orchestrators -o table
+    az aks get-versions --location uksouth -o table
+    az aks get-versions --location uksouth --query values -o table
     ```
     ![az-aks-versions](media/az-aks-versions.png)
 
@@ -59,5 +60,5 @@
     
     Deployed resources
     
-    ![az-aks-credentials](media/az-level-up-resources-2.png)
+    ![az-aks-credentials](media/lab-resources-2.png)
 [Continue >](../modules/indirect.md)

@@ -129,9 +129,25 @@
 
     ![az-aks-custom-loc](media/az-aks-custom-loc.png)
 
-14. Deploy Data Controller using Azure Infrastructure (see **[reference](https://docs.microsoft.com/en-us/cli/azure/arcdata/dc?view=azure-cli-latest)** for more info)
+14. Get Log Analytics Workspace Id
 
-    You will be asked to enter a username and password for the account that manages the Data Controller (e.g. for monitoring purposes)
+    ```txt
+    az monitor log-analytics workspace show --resource-group <RG Name> --workspace-name <Log Analytics Workspace Name> --query customerId -o tsv
+    ```
+
+    ![az-get-log-analytics-workspace-id](media/az-get-log-analytics-workspace-id.png)
+
+15. Get Log Analytics Workspace Primary Key
+
+    ```txt
+    az monitor log-analytics workspace get-shared-keys --name <Log Analytics Workspace Name> --resource-group <RG Name> --query primarySharedKey -o tsv
+    ```
+
+    ![az-get-log-analytics-workspace-key](media/az-get-log-analytics-workspace-key.png)
+
+16. Deploy Data Controller using Azure Infrastructure (see **[reference](https://docs.microsoft.com/en-us/cli/azure/arcdata/dc?view=azure-cli-latest)** for more info)
+
+    You will be asked to enter the Log Analytics Workspace Id and Primary Key as well as a username and password for the account that manages the Data Controller (e.g. for monitoring purposes)
 
     ```txt
     az arcdata dc create --connectivity-mode direct --name <Data Controller Name e.g. arc-dc> --subscription <Your Subscription Id> --resource-group <RG Name> --location <Region> --storage-class managed-premium --profile-name azure-arc-aks-premium-storage --infrastructure azure --custom-location <Custom Location Name> --cluster-name <AKS Name> --auto-upload-logs true --auto-upload-logs true
@@ -139,7 +155,7 @@
 
     ![az-aks-dc-create-dir-mode](media/az-aks-dc-create-dir-mode.png)
 
-15. Verify Data Controller (DC) has been created successfully by ensuring new pods have been created for the DC.
+17. Verify Data Controller (DC) has been created successfully by ensuring new pods have been created for the DC.
 
     ```txt
     kubectl get pods -n <Namespace>
@@ -147,7 +163,7 @@
 
     ![az-aks-dc-get-pods](media/az-aks-dc-get-pods.png)
 
-16. Deploy a Development General Purpose Arc Enabled SQL MI with 1 replica, 2 vCores with a maximum of 4, 4GB of memory with a maximum of 8, managed premium storage for everything apart from backups where managed premium is not available (see **[reference](https://docs.microsoft.com/en-us/cli/azure/sql/mi-arc?view=azure-cli-latest)** for more info)
+18. Deploy a Development General Purpose Arc Enabled SQL MI with 1 replica, 2 vCores with a maximum of 4, 4GB of memory with a maximum of 8, managed premium storage for everything apart from backups where managed premium is not available (see **[reference](https://docs.microsoft.com/en-us/cli/azure/sql/mi-arc?view=azure-cli-latest)** for more info)
 
     You will be asked to enter a username and password for the SQL Admin account
 
@@ -157,7 +173,7 @@
 
     ![az-aks-dc-sqlmi-gp-dc](media/az-aks-dc-sqlmi-gp-dc.png)
 
-17. Deploy a Development Business Critical Arc Enabled SQL MI with 3 replicas, 2 vCores with a maximum of 4, 4GB of memory with a maximum of 8, managed premium storage for everything apart from backups
+19. Deploy a Development Business Critical Arc Enabled SQL MI with 3 replicas, 2 vCores with a maximum of 4, 4GB of memory with a maximum of 8, managed premium storage for everything apart from backups
 
     You will be asked to enter a username and password for the SQL Admin account
 
@@ -167,7 +183,7 @@
 
     ![az-aks-dc-sqlmi-bc-dc](media/az-aks-dc-sqlmi-bc-dc.png)
 
-18. Verify both Managed Instances were successfully created
+20. Verify both Managed Instances were successfully created
 
     ```txt
     kubectl get services -n <Namespace>
@@ -340,13 +356,7 @@ SQL Server agent is disabled by default.
     END;
     ```
 
-4. Enable the trace flag - There is a bug and the PG is aware of it
-
-    ```sql
-    DBCC traceon(1820,-1)
-    ```
-
-5. Verify the backup file is readable, and intact
+4. Verify the backup file is readable, and intact
 
     ```sql
     RESTORE FILELISTONLY 
@@ -355,7 +365,7 @@ SQL Server agent is disabled by default.
 
     If this fails with error "Operating system error 5(Access is denied.)" this could be an issue with SAS or it could be a network issue.  If your storage account can only be accessed via Firewall rule (selected networks) then you will need to create a service endpoint for the Virtual Network / Subnet in your Kubernetes managed resource group and add to the firewall rule for Virtual Networks
 
-6. Prepare and run the RESTORE DATABASE
+5. Prepare and run the RESTORE DATABASE
 
     ```sql
     RESTORE DATABASE <database name> FROM URL = 'https://<mystorageaccountname>.blob.core.windows.net/<mystorageaccountcontainername>/<file name>.bak'
